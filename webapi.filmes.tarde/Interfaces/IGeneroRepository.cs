@@ -43,9 +43,9 @@ namespace webapi.filmes.tarde.Interfaces
         void AtualizarIdUrl(int id, GeneroDomain genero);
 
         /// <summary>
-        /// Deletar um gênero
+        /// Deletar um gênero existente
         /// </summary>
-        /// <param name="idGenero"></param>
+        /// <param name="idGenero">ID do gênero a ser deletado</param>
         void Deletar(int idGenero);
     }
 }
