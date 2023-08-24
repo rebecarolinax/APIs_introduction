@@ -61,7 +61,48 @@ namespace webapi.filmes.tarde.Controllers
            
         }
 
+        /// <summary>
+        /// Busca o gênero através do ID 
+        /// </summary>
+        /// <param name="id">ID do gênero a buscar</param>
+        /// <returns>O objeto referente ao ID</returns>
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            // Cria um objeto generoBuscado 
+            GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
 
+            // Verifica se nenhum gênero foi encontrado
+            if (generoBuscado == null)
+            {
+                // Caso não seja encontrado, retorna um status code 404 com a mensagem
+                return NotFound("Não encontrado!");
+            }
+
+            // Retorna o gênero buscado com um status code 200 - Ok
+            return Ok(generoBuscado);
+        }
+
+        /// <summary>
+        /// Cadastra um novo gênero
+        /// </summary>
+        /// <param name="novoGenero">O objeto que será cadastrado</param>
+        /// <returns>Um cadastro de objeto</returns>
+        [HttpPost]
+        public IActionResult Post(GeneroDomain novoGenero)
+        {
+            try
+            {
+                //Chama o método Cadastrar() do repositório
+                _generoRepository.Cadastrar(novoGenero);
+
+                return StatusCode(201);    
+            }
+            catch (Exception erro )
+            {
+                return BadRequest(erro.Message);
+            }
+        }
     }
 
 }
