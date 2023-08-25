@@ -98,11 +98,73 @@ namespace webapi.filmes.tarde.Controllers
 
                 return StatusCode(201);    
             }
-            catch (Exception erro )
+            catch (Exception erro)
             {
                 return BadRequest(erro.Message);
             }
         }
+
+        /// <summary>
+        /// Deleta um gênero existente
+        /// </summary>
+        /// <param name="id">ID do gênero que será deletado</param>
+        /// <returns>Exclusão do gênero</returns>
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            try
+            {
+                //Chama o método Deletar() do reposítorio
+                _generoRepository.Deletar(id);  
+                
+                // Retorna um status code 204 - No Content
+                return StatusCode(204);
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro.Message);
+            }
+        }
+
+        /// <summary>
+        /// Atualiza um gênero passando o ID pela URL 
+        /// </summary>
+        /// <param name="id">ID do gênero que será atualizado e passado pela URL</param>
+        /// <param name="generoAtualizado">Objeto já atualizado</param>
+        /// <returns>Atualiza um gênero</returns>
+        [HttpPut("{id}")]
+        public IActionResult PutIdUrl(int id, GeneroDomain generoAtualizado)
+        {
+            try
+            {
+                // Chamada o método AtualizarIdUrl()
+                _generoRepository.AtualizarIdUrl(id, generoAtualizado);
+
+                // Retorna um status code 204 
+                return NoContent();
+            }
+         
+            catch (Exception erro)
+            {
+                // Retorna um status code 400 
+                return BadRequest(erro.Message);
+            }
+        }
+
+        [HttpPut]
+       public IActionResult PutIdBody(GeneroDomain generoAtualizadoCorpo)
+        {
+            try
+            {
+                _generoRepository.AtualizarIdCorpo(generoAtualizadoCorpo);
+            }
+            catch (Exception erro)
+            {
+                return BadRequest(erro.Message);
+            }
+        }
+
+
     }
 
 }

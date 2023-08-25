@@ -18,15 +18,61 @@ namespace webapi.filmes.tarde.Repositories
         ///     -   SQL SERVER: User Id = SA; Pwd = Senha
         /// </summary>
         private string StringConexao = "Data Source = NOTE09-S14; Initial Catalog = Filmes_Rebeca; User Id = sa; Pwd = Senai@134";
+
+        /// <summary>
+        /// Atualiza um gênero passando o ID pelo corpo
+        /// </summary>
+        /// <param name="genero">Objeto com novas atualizações</param>
         public void AtualizarIdCorpo(GeneroDomain genero)
         {
-            throw new NotImplementedException();
+            // Declara a SqlConnection con passando a string de conexão como parâmetro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                // Declara a query a ser executada
+                string queryUpdateIdBody = "UPDATE Genero SET Nome = @Nome WHERE IdGenero = @ID";
+
+                // Declara o SqlCommand cmd passando a query que será executada e a conexão como parâmetros
+                using (SqlCommand cmd = new SqlCommand(queryUpdateIdBody, con))
+                {
+                    // Passa os valores para os parâmetros
+                    cmd.Parameters.AddWithValue("@ID", genero.IdGenero);
+                    cmd.Parameters.AddWithValue("@Nome", genero.Nome);
+
+                    // Abre a conexão com o banco de dados
+                    con.Open();
+
+                    // Executa o comando
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
+        /// <summary>
+        /// Atualiza um gênero passando um ID pela URL
+        /// </summary>
+        /// <param name="id">ID do gênero que será atualizado</param>
+        /// <param name="genero">objeto que será atualizado</param>
         public void AtualizarIdUrl(int id, GeneroDomain genero)
         {
-            throw new NotImplementedException();
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                string queryUpdateIdUrl = "UPDATE Genero SET Nome = @Nome WHERE IdGenero = @ID";
+
+                using (SqlCommand cmd = new SqlCommand(queryUpdateIdUrl, con))
+                {
+                    // Passa os valores para os parâmetros
+                    cmd.Parameters.AddWithValue("@ID", id);
+                    cmd.Parameters.AddWithValue("@Nome", genero.Nome);
+
+                    // Abre a conexão com o banco de dados
+                    con.Open();
+
+                    // Executa o comando
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
+
         public GeneroDomain BuscarPorId(int id)
         {
             // Declara a SqlConnection 
@@ -74,11 +120,13 @@ namespace webapi.filmes.tarde.Repositories
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
                 //Declara a query que será executada
-                string queryInsert = "INSERT INTO Genero(Nome) VALUES('" + novoGenero.Nome + "')";
+                string queryInsert = "INSERT INTO Genero(Nome) VALUES(@Nome)";
 
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
+                    cmd.Parameters.AddWithValue("@Nome", novoGenero.Nome);       
+
                     con.Open();
 
                     cmd.ExecuteNonQuery();
@@ -86,9 +134,31 @@ namespace webapi.filmes.tarde.Repositories
             }
         }
 
-        public void Deletar(int idGenero)
+        /// <summary>
+        /// Deleta um gênero por ID
+        /// </summary>
+        /// <param name="id">ID do gênero que será deletado</param>
+        public void Deletar(int id)
         {
-            throw new NotImplementedException();
+            // Declara a SqlConnection con passando a string de conexão como parâmetro
+            using (SqlConnection con = new SqlConnection(StringConexao))
+            {
+                // Declara a query a ser executada passando o parâmetro @ID
+                string queryDelete = "DELETE FROM Genero WHERE IdGenero = @ID";
+
+                // Declara o SqlCommand cmd passando a query que será executada e a conexão como parâmetros
+                using (SqlCommand cmd = new SqlCommand(queryDelete, con))
+                {
+                    // Define o valor do ID recebido no método como o valor do parâmetro @ID
+                    cmd.Parameters.AddWithValue("@ID", id);
+
+                    // Abre a conexão com o banco de dados
+                    con.Open();
+
+                    // Executa o comando
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
         /// <summary>
