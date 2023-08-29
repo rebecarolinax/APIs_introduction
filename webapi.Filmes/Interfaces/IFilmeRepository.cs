@@ -2,6 +2,9 @@
 
 namespace webapi.filmes.tarde.Interfaces
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public interface IFilmeRepository
     {
         //TipoDeRetorno NomeMetodo(TipoParametro NomeParametro)
@@ -35,7 +38,7 @@ namespace webapi.filmes.tarde.Interfaces
         /// Atualizar um filme existente passando o ID pela URL da requisição
         /// </summary>
         /// <param name="id">ID do objeto a ser atualizado</param>
-        /// <param name="filme">Objeto com as novas informações</param>
+        /// <param name="filme">Objeto com as novas informações</param>1
         void AtualizarIdUrl(int id, FilmeDomain filme);
 
         /// <summary>

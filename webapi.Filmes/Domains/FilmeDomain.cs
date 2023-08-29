@@ -14,7 +14,7 @@ namespace webapi.filmes.tarde.Domains
         public string? Título { get; set; }
         public int IdGenero { get; set; }
 
-        // Referência para a classe gênero
+        // Referência para a classe grêmio
         public GeneroDomain? Genero { get; set; }
 
     }

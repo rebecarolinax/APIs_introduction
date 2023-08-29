@@ -38,86 +38,63 @@ namespace webapi.filmes.tarde.Controllers
         }
 
         /// <summary>
-        /// EndPoint que acessa o método de listar os gêneros
+        /// Endpoint que aciona o método listarTodos do repositório e retorna a resposta para o usuário
         /// </summary>
-        /// <returns>uma lista de gêneros com um StatusCode</returns>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Get()
         {
             try
             {
-                 //Cria uma lista para receber os gêneros
-                 List<GeneroDomain> listaGeneros = _generoRepository.ListarTodos();
+                //Cria uma lista que recebe os dados da requisição
+                List<GeneroDomain> listaGeneros = _generoRepository.ListarTodos();
 
-                 //Retorna o statuscode(200) e a listagem de gêneros no formato JSON 
-                 return Ok(listaGeneros);
+                //Retorna a lista no formato JSON com o status code OK(200)
+                return Ok(listaGeneros);
             }
-            
             catch (Exception erro)
             {
                 //Retorna status code BadRequest(400) e a mensagem do erro
                 return BadRequest(erro.Message);
             }
-           
+
         }
 
         /// <summary>
-        /// Busca o gênero através do ID 
+        /// endpoint que aciona o metodo de cadastro do genero 
         /// </summary>
-        /// <param name="id">ID do gênero a buscar</param>
-        /// <returns>O objeto referente ao ID</returns>
-        [HttpGet("{id}")]
-        public IActionResult GetById(int id)
-        {
-            // Cria um objeto generoBuscado 
-            GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
-
-            // Verifica se nenhum gênero foi encontrado
-            if (generoBuscado == null)
-            {
-                // Caso não seja encontrado, retorna um status code 404 com a mensagem
-                return NotFound("Não encontrado!");
-            }
-
-            // Retorna o gênero buscado com um status code 200 - Ok
-            return Ok(generoBuscado);
-        }
-
-        /// <summary>
-        /// Cadastra um novo gênero
-        /// </summary>
-        /// <param name="novoGenero">O objeto que será cadastrado</param>
-        /// <returns>Um cadastro de objeto</returns>
+        /// <param name="novoGenero">objeto recebido na requisicao</param>
+        /// <returns>StatusCode 201(Created)</returns>
         [HttpPost]
         public IActionResult Post(GeneroDomain novoGenero)
         {
             try
             {
-                //Chama o método Cadastrar() do repositório
+                //Fazendo a chamada para o método cadastrar passando o objeto como parâmetro 
                 _generoRepository.Cadastrar(novoGenero);
 
-                return StatusCode(201);    
+                //Retorna um status code 201(Created)
+                return StatusCode(201);
             }
             catch (Exception erro)
             {
+                //Retorna status code BadRequest(400) e a mensagem do erro
                 return BadRequest(erro.Message);
             }
         }
 
         /// <summary>
-        /// Deleta um gênero existente
+        /// Endpoint que aciona o método de deletar 
         /// </summary>
-        /// <param name="id">ID do gênero que será deletado</param>
-        /// <returns>Exclusão do gênero</returns>
+        /// <param name="id"> Parâmetro passado para encontrar o que deseja deletar </param>
+        /// <returns></returns>
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
             try
             {
-                //Chama o método Deletar() do reposítorio
-                _generoRepository.Deletar(id);  
-                
-                // Retorna um status code 204 - No Content
+                _generoRepository.Deletar(id);
+
                 return StatusCode(204);
             }
             catch (Exception erro)
@@ -127,36 +104,45 @@ namespace webapi.filmes.tarde.Controllers
         }
 
         /// <summary>
-        /// Atualiza um gênero passando o ID pela URL 
+        /// Endpoint que aciona o método de buscar por ID
         /// </summary>
-        /// <param name="id">ID do gênero que será atualizado e passado pela URL</param>
-        /// <param name="generoAtualizado">Objeto já atualizado</param>
-        /// <returns>Atualiza um gênero</returns>
-        [HttpPut("{id}")]
-        public IActionResult PutIdUrl(int id, GeneroDomain generoAtualizado)
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("{id}")]
+        public IActionResult SearchById(int id)
         {
             try
             {
-                // Chamada o método AtualizarIdUrl()
-                _generoRepository.AtualizarIdUrl(id, generoAtualizado);
+                GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
 
-                // Retorna um status code 204 
-                return NoContent();
+                if (generoBuscado != null)
+                {
+                    return Ok(generoBuscado);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-         
             catch (Exception erro)
             {
-                // Retorna um status code 400 
                 return BadRequest(erro.Message);
             }
         }
 
+        /// <summary>
+        /// Endpoint que aciona o método de atualizar dados por ID no corpo
+        /// </summary>
+        /// <param name="genero"></param>
+        /// <returns></returns>
         [HttpPut]
-       public IActionResult PutIdBody(GeneroDomain generoAtualizadoCorpo)
+        public IActionResult Put(GeneroDomain genero)
         {
             try
             {
-                _generoRepository.AtualizarIdCorpo(generoAtualizadoCorpo);
+                _generoRepository.AtualizarIdCorpo(genero);
+
+                return StatusCode(200);
             }
             catch (Exception erro)
             {
@@ -164,7 +150,26 @@ namespace webapi.filmes.tarde.Controllers
             }
         }
 
+        /// <summary>
+        /// Endpoint que aciona método de atualizar dados por ID passando pela URL
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="genero"></param>
+        /// <returns></returns>
+        [HttpPut("{id}")]
+        public IActionResult PutByUrl(int id, GeneroDomain genero)
+        {
+            try
+            {
+                _generoRepository.AtualizarIdUrl(id, genero);
 
+                return StatusCode(200);
+            }
+            catch (Exception erro)
+            {
+
+                return BadRequest(erro.Message);
+            }
+        }
     }
-
 }
