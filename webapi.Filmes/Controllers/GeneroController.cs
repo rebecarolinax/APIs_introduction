@@ -7,168 +7,158 @@ using webapi.filmes.tarde.Repositories;
 namespace webapi.filmes.tarde.Controllers
 {
     /// <summary>
-    /// Define que a rota de uma requisição será no seguinte formato:
+    /// Define que a rota de uma requisição será no seguinte formato
     /// dominio/api/nomeController
-    /// http://localhost:5000/api/Genero
+    /// exemplo: http://localhost:5000/api/Genero
     /// </summary>
     [Route("api/[controller]")]
-
     /// <summary>
-    /// Define que é um controlador de API
+    /// Define quem é o controlador da API
     /// </summary>
     [ApiController]
-
     /// <summary>
-    /// Define que o tipo de resposta da API é JSON
+    /// Define o tipo de resposta da API como JSON
     /// </summary>
-    [Produces("application/json")]  
+    [Produces("application/json")]
     public class GeneroController : ControllerBase
     {
         /// <summary>
-        /// Objeto(_generoRepository) que irá receber os métodos definidos na interface
+        /// Objeto que irá receber os métodos definidos na interface
         /// </summary>
         private IGeneroRepository _generoRepository { get; set; }
 
         /// <summary>
-        /// Instância do objeto(_generoRepository) para que haja referência aos métodos do repositório
+        /// Instância do objeto _generoRepository para que haja referência aos métodos no repositório
         /// </summary>
-        public GeneroController()
-        {
-            _generoRepository= new GeneroRepository();
-        }
+        public GeneroController() => _generoRepository = new GeneroRepository();
 
         /// <summary>
-        /// Endpoint que aciona o método listarTodos do repositório e retorna a resposta para o usuário
+        /// Endpoint que acessa o método de listar os gêneros
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Lista de gêneros e um Status Code</returns>
         [HttpGet]
-        public IActionResult Get()
+        [Route("ListarTodos")]
+        public IActionResult GetAll()
         {
             try
             {
-                //Cria uma lista que recebe os dados da requisição
                 List<GeneroDomain> listaGeneros = _generoRepository.ListarTodos();
 
-                //Retorna a lista no formato JSON com o status code OK(200)
-                return Ok(listaGeneros);
+                // Retorna o status code 200 ok e a lista de gêneros no formato JSON
+                return StatusCode(200, listaGeneros);
+                //return Ok(listaGeneros);
             }
-            catch (Exception erro)
+            catch (Exception error)
             {
-                //Retorna status code BadRequest(400) e a mensagem do erro
-                return BadRequest(erro.Message);
+                // Retorna um status code 400 - BadRequest e a mensagem de erro
+                return BadRequest(error.Message);
             }
-
         }
 
         /// <summary>
-        /// endpoint que aciona o metodo de cadastro do genero 
+        /// Endpoint que acesso o método de buscar gênero a partir de um ID
         /// </summary>
-        /// <param name="novoGenero">objeto recebido na requisicao</param>
-        /// <returns>StatusCode 201(Created)</returns>
+        /// <returns>Gênero encontrado e um status code</returns>
+        [HttpGet]
+        [Route("BuscarPorId")]
+        public IActionResult GetById(int id) // IActionResult - Espera que se retorne um status code
+        {
+            try
+            {
+                GeneroDomain genero = _generoRepository.BuscarPorId(id);
+
+                return genero == null ? NotFound("O gênero buscado não foi encontrado") : StatusCode(200, genero);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Endpoint que acessa o método de cadastrar gênero
+        /// </summary>
+        /// <returns>Gênero a ser cadastrado e status code</returns>
         [HttpPost]
+        [Route("Cadastrar")]
         public IActionResult Post(GeneroDomain novoGenero)
         {
             try
             {
-                //Fazendo a chamada para o método cadastrar passando o objeto como parâmetro 
                 _generoRepository.Cadastrar(novoGenero);
 
-                //Retorna um status code 201(Created)
-                return StatusCode(201);
-            }
-            catch (Exception erro)
+                return Created("Objeto criado", novoGenero);
+                //return StatusCode(201, novoGenero);
+            } catch (Exception error)
             {
-                //Retorna status code BadRequest(400) e a mensagem do erro
-                return BadRequest(erro.Message);
+                // Retorna um status code BadRequest(400) e a mensagem de erro
+                return BadRequest(error.Message);
             }
         }
 
         /// <summary>
-        /// Endpoint que aciona o método de deletar 
+        /// Endpoint que acessa o método de deletar gênero
         /// </summary>
-        /// <param name="id"> Parâmetro passado para encontrar o que deseja deletar </param>
+        /// <param name="id"></param>
         /// <returns></returns>
-        [HttpDelete("{id}")]
+        [HttpDelete("Deletar/{id}")]
+        //[Route("Deletar")]
         public IActionResult Delete(int id)
         {
             try
             {
                 _generoRepository.Deletar(id);
 
-                return StatusCode(204);
+                return StatusCode(204, id);
             }
-            catch (Exception erro)
+            catch (Exception error)
             {
-                return BadRequest(erro.Message);
+                return BadRequest(error.Message);
             }
         }
 
         /// <summary>
-        /// Endpoint que aciona o método de buscar por ID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpGet("{id}")]
-        public IActionResult SearchById(int id)
-        {
-            try
-            {
-                GeneroDomain generoBuscado = _generoRepository.BuscarPorId(id);
-
-                if (generoBuscado != null)
-                {
-                    return Ok(generoBuscado);
-                }
-                else
-                {
-                    return NotFound();
-                }
-            }
-            catch (Exception erro)
-            {
-                return BadRequest(erro.Message);
-            }
-        }
-
-        /// <summary>
-        /// Endpoint que aciona o método de atualizar dados por ID no corpo
+        /// Endpoint que acessa o método de atualizar gênero através do corpo da requisição
         /// </summary>
         /// <param name="genero"></param>
         /// <returns></returns>
         [HttpPut]
-        public IActionResult Put(GeneroDomain genero)
+        [Route("AtualizarIdCorpo")]
+        public IActionResult PutIdBody(GeneroDomain genero)
         {
             try
             {
-                _generoRepository.AtualizarIdCorpo(genero);
+                _generoRepository.Atualizar(genero);
 
                 return StatusCode(200);
             }
-            catch (Exception erro)
+            catch (Exception error)
             {
-                return BadRequest(erro.Message);
+                return BadRequest(error.Message);
             }
         }
 
         /// <summary>
-        /// Endpoint que aciona método de atualizar dados por ID passando pela URL
+        /// Endpoint que acessa o método de atualizar gênero através da URL
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="genero"></param>
+        /// <param name="nome"></param>
         /// <returns></returns>
-        [HttpPut("{id}")]
-        public IActionResult PutByUrl(int id, GeneroDomain genero)
+        [HttpPut("AtualizarIdURL/{id}")]
+        public IActionResult PutIdUrl(int id, string nome)
         {
             try
             {
-                _generoRepository.AtualizarIdUrl(id, genero);
+                GeneroDomain genero = _generoRepository.BuscarPorId(id);
+                genero.Nome = nome;
+
+                _generoRepository.Atualizar(genero);
 
                 return StatusCode(200);
             }
-            catch (Exception erro)
+            catch (Exception error)
             {
-
-                return BadRequest(erro.Message);
+                return BadRequest(error.Message);
             }
         }
     }

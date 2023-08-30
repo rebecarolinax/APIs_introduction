@@ -6,21 +6,33 @@ namespace webapi.filmes.tarde.Repositories
 {
     public class FilmeRepository : IFilmeRepository
     {
+        /// <summary>
+        /// String de conexão com o banco de dados que recebe os seguintes parâmetros:
+        /// Data Source: Nome do servidor do banco
+        /// Initial Catalog: Nome do banco de dados
+        /// Autenticação:
+        ///     - Windows: Integrated Security = True
+        ///     - SqlServer: User Id = sa; Pwd = Senha
+        /// </summary>
         private string StringConexao = "Data Source = NOTE09-S14; Initial Catalog = Filmes_Rebeca; User Id = sa; Pwd = Senai@134";
-        public void AtualizarIdCorpo(FilmeDomain filme)
+
+        public void Atualizar(FilmeDomain filme)
         {
-            //Declara a SqlConnection passando a string de conexão como parâmetro
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
                 //Declara a instrução a ser executada
-                string queryUpdateBody = "UPDATE Filme SET Titulo = @Título, IdGenero = @IdGenero WHERE IdFilme = @IdFilme";
+                string queryUpdateBody = "UPDATE Filme SET Titulo = @Titulo, IdGenero = @IdGenero WHERE IdFilme = @IdFilme";
 
-                //Declara o SqlCommand passando a query que será executada e a conexão com o banco de dados
+                //Declara o SqlCommand passando a query que será executada e a conexão com o banco de dado
                 using (SqlCommand cmd = new SqlCommand(queryUpdateBody, con))
                 {
-                    
-                    cmd.Parameters.AddWithValue("@Título", filme.Título);                  
+                    //Passa o valor do parametro 
+                    cmd.Parameters.AddWithValue("@Titulo", filme.Titulo);
+
+                    //Passa o valor do parametro 
                     cmd.Parameters.AddWithValue("@IdGenero", filme.IdGenero);
+
+                    //Passa o valor do parametro 
                     cmd.Parameters.AddWithValue("@IdFilme", filme.IdFilme);
 
                     //Abre a conexão com o banco de dados
@@ -32,139 +44,99 @@ namespace webapi.filmes.tarde.Repositories
             }
         }
 
-        public void AtualizarIdUrl(int id, FilmeDomain filme)
-        {
-            
-
-
-        }
+        /// <summary>
+        /// Buscar um gênero a partir de um id
+        /// </summary>
+        /// <param name="id">Id do gênero a ser buscado</param>
+        /// <returns>Gênero que foi buscado</returns>
+        public FilmeDomain? BuscarPorId(int id) => ListarTodos().FirstOrDefault(filme => filme.IdFilme == id);
 
         /// <summary>
-        /// Método que busca um objeto através do seu ID
+        /// Cadastrar um novo filme
         /// </summary>
-        /// <param name="id">Id do filme que será procurado</param>
-        /// <returns>Retorna o objeto encontrado</returns>
-        public FilmeDomain BuscarPorId(int id)
-        {
-            //Declara um objeto que sera guardado o filme buscado.
-            FilmeDomain filmeBuscado = new FilmeDomain();
-
-            //Declara uma nova SqlConnection passando como parâmetro a string de conexão
-            using (SqlConnection con = new SqlConnection(StringConexao))
-            {
-                //Comando que será executado
-                string querySelectAll = "SELECT IdFilme, Filme.IdGenero, Titulo, Nome FROM Filme LEFT JOIN Genero ON Genero.IdGenero = Filme.IdGenero";
-
-                //Abre a conexão do banco de dados
-                con.Open();
-
-                //Declara o DataReader que percorre a tabela do banco de dados
-                SqlDataReader rdr;
-
-                //Declara o SqlCommand passando a query e a con como parâmetros
-                using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
-                {
-                    //Executa o reader e atribui ao RDR
-                    rdr = cmd.ExecuteReader();
-
-                    while (rdr.Read())
-                    {
-                        FilmeDomain filme = new FilmeDomain()
-                        {
-                          
-                            IdFilme = Convert.ToInt32(rdr["IdFilme"]),
-                            IdGenero = Convert.ToInt32(rdr["IdGenero"]),
-                            Título = Convert.ToString(rdr["Titulo"]),
-
-                            //Atribui a propriedade gênero um objeto do tipo GeneroDomain, trazendo as informações correspondentes aquele filme
-                            Genero = new GeneroDomain()
-                            {
-                                IdGenero = Convert.ToInt32(rdr["IdGenero"]),
-                                Nome = Convert.ToString(rdr["Nome"])
-                            }
-                        };
-
-                        //Condição para atribuir o filme que seja igual ao ID digitado
-                        if (filme.IdFilme == id)
-                        {
-                            filmeBuscado = filme;
-
-                            return filmeBuscado;
-                        }
-                    }
-                }
-            }
-            return null;
-        }
-
+        /// <param name="novoFilme">Objeto da classe Filme que será cadastrado</param>
         public void Cadastrar(FilmeDomain novoFilme)
         {
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
-                string queryInsert = "INSERT INTO Filme (IdGenero, Titulo) VALUES (@IdGenero, @Titulo)";
+                string queryInsert = $"INSERT INTO Filme(IdGenero, Titulo) VALUES ({novoFilme.IdGenero}, @Titulo)";
 
                 using (SqlCommand cmd = new SqlCommand(queryInsert, con))
                 {
-                    cmd.Parameters.AddWithValue("@IdGenero", novoFilme.IdGenero);
-                    cmd.Parameters.AddWithValue("@Titulo", novoFilme.Título);
+                    cmd.Parameters.AddWithValue("@Titulo", novoFilme.Titulo);
 
                     con.Open();
-
                     cmd.ExecuteNonQuery();
                 }
             }
         }
 
+        /// <summary>
+        /// Deletar um filme existente
+        /// </summary>
+        /// <param name="id">Id do filme a ser deletado</param>
         public void Deletar(int id)
         {
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
-                string queryDelete = "DELETE Filme WHERE IdFilme = @IdFilme";
+                string queryDelete = $"DELETE FROM Filme WHERE Filme.IdFilme LIKE {id}";
 
                 using (SqlCommand cmd = new SqlCommand(queryDelete, con))
                 {
-                    cmd.Parameters.AddWithValue("@IdFilme", id);
-
                     con.Open();
-
-                    cmd.ExecuteNonQuery();
+                    cmd.ExecuteNonQuery(); // Somente para executar INSERT, UPDATE e DELETE (não retorna dados)
                 }
             }
         }
 
+        /// <summary>
+        /// Listar todos os objetos do tipo Filme
+        /// </summary>
+        /// <returns>Lista de objetos do tipo Filme</returns>
         public List<FilmeDomain> ListarTodos()
         {
+            // Cria uma lista de filmes onde os filmes serão armazenados
             List<FilmeDomain> listaFilmes = new List<FilmeDomain>();
 
+            // Declara a SqlConnection passando a string de conexão como parâmetro
             using (SqlConnection con = new SqlConnection(StringConexao))
             {
-                string querySelectAll = "SELECT IdFilme, Filme.IdGenero, Titulo, Nome FROM Filme LEFT JOIN Genero ON Genero.IdGenero = Filme.IdGenero";
+                // Declara a instrução a ser executada
+                string querySelectAll = "SELECT Filme.IdFilme, Filme.Titulo, Genero.IdGenero, Genero.Nome FROM Filme INNER JOIN Genero ON Genero.IdGenero LIKE Filme.IdGenero";
 
+                // Abre a conexão com o banco de dados
                 con.Open();
 
+                // Declara o SqlDataReader para percorrer(ler) a tabela no banco de dados
+                SqlDataReader rdr;
+
+                // Declara o SqlCommand passando a query que será executada e a conexão
                 using (SqlCommand cmd = new SqlCommand(querySelectAll, con))
                 {
-                    SqlDataReader rdr;
-
+                    // Executa a query e armazena os dados no rdr
                     rdr = cmd.ExecuteReader();
 
+                    // Enquanto houver registros para serem lidos no rdr, o laço se repetirá
                     while (rdr.Read())
                     {
+
                         FilmeDomain filme = new FilmeDomain()
                         {
-                            IdFilme = Convert.ToInt32(rdr["IdFilme"]),
-
-                            IdGenero = Convert.ToInt32(rdr["IdGenero"]),
-
-                            Título = rdr["Galinha"].ToString()
+                            // Atribui a propriedade IdFilme o valor da primeira coluna da tabela
+                            IdFilme = Convert.ToInt32(rdr[0]),
+                            Titulo = rdr[1].ToString(),
+                            IdGenero = Convert.ToInt32(rdr[2]),
+                            Genero = new GeneroDomain()
+                            {
+                                IdGenero = Convert.ToInt32(rdr[2]),
+                                Nome = rdr[3].ToString()
+                            }
                         };
-
                         listaFilmes.Add(filme);
                     }
                 }
-                return listaFilmes;
             }
+            return listaFilmes;
         }
     }
 }
-
