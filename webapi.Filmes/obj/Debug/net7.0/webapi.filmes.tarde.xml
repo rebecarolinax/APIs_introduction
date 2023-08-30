@@ -120,6 +120,14 @@
             <param name="nome"></param>
             <returns></returns>
         </member>
+        <member name="M:webapi.filmes.tarde.Controllers.UsuarioController.Logar(System.String,System.String)">
+            <summary>
+            Endpoint que aciona o método login no repositorio
+            </summary>
+            <param name="email">email do usuario</param>
+            <param name="senha">senha do usuario</param>
+            <returns>retorna a resposta para o usuario(front-end)</returns>
+        </member>
         <member name="T:webapi.filmes.tarde.Domains.FilmeDomain">
             <summary>
             Classe que representa a entidade(tabela) Filme
