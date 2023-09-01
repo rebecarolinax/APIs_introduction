@@ -901,11 +901,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\54931473865\\Desktop\\Web_API\\webapi.Filmes\\webapi.filmes.tarde.csproj",
+      "projectUniqueName": "C:\\Users\\54931473865\\Desktop\\Web_API\\Filmes\\webapi.Filmes\\webapi.filmes.tarde.csproj",
       "projectName": "webapi.filmes.tarde",
-      "projectPath": "C:\\Users\\54931473865\\Desktop\\Web_API\\webapi.Filmes\\webapi.filmes.tarde.csproj",
+      "projectPath": "C:\\Users\\54931473865\\Desktop\\Web_API\\Filmes\\webapi.Filmes\\webapi.filmes.tarde.csproj",
       "packagesPath": "C:\\Users\\54931473865\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\54931473865\\Desktop\\Web_API\\webapi.Filmes\\obj\\",
+      "outputPath": "C:\\Users\\54931473865\\Desktop\\Web_API\\Filmes\\webapi.Filmes\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\54931473865\\AppData\\Roaming\\NuGet\\NuGet.Config",

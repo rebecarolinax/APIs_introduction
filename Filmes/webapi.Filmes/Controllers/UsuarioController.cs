@@ -28,11 +28,11 @@ namespace webapi.filmes.tarde.Controllers
         
 
         [HttpPost]
-        public IActionResult Logar(string email, string senha)
+        public IActionResult Logar(UsuarioDomain usuario)
         {
             try
             {
-               UsuarioDomain usuarioEncontrado = _usuarioRepository.Login(email, senha);
+               UsuarioDomain usuarioEncontrado = _usuarioRepository.Login(usuario.Email, usuario.Senha);
 
                 if (usuarioEncontrado == null)
                 {

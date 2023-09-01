@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "kLGhRTmzN82wLMCJ7Wiw3ydhGJd4DQbA3CamaIhg0r3pgxMt4uc7eDeb8j7qozM4Y1nRUCyoLeKpBGenG4j1Yg==",
+  "dgSpecHash": "an9FKFGvJaEsy8OxE+FyRbstcY7RL+44EIFG1HDUxFHGwG1acBKZ9g0nTBzx1/m7M9enEDRkRcnl/pdXZxc/og==",
   "success": true,
-  "projectFilePath": "C:\\Users\\54931473865\\Desktop\\Web_API\\webapi.Filmes\\webapi.filmes.tarde.csproj",
+  "projectFilePath": "C:\\Users\\54931473865\\Desktop\\Web_API\\Filmes\\webapi.Filmes\\webapi.filmes.tarde.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\54931473865\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
     "C:\\Users\\54931473865\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
