@@ -155,3 +155,11 @@ C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\obj\Debug\n
 C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\obj\Debug\net7.0\webapi.filmes.tarde.pdb
 C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\obj\Debug\net7.0\webapi.filmes.tarde.genruntimeconfig.cache
 C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\obj\Debug\net7.0\ref\webapi.filmes.tarde.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\54931473865\Desktop\Web_API\exercício-filmes\webapi.Filmes\bin\Debug\net7.0\System.IdentityModel.Tokens.Jwt.dll

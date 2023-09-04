@@ -85,6 +85,7 @@
             Endpoint que acessa o método de listar os gêneros
             </summary>
             <returns>Lista de gêneros e um Status Code</returns>
+            
         </member>
         <member name="M:webapi.filmes.tarde.Controllers.GeneroController.GetById(System.Int32)">
             <summary>

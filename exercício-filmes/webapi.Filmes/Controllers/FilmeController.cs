@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using webapi.filmes.tarde.Domains;
 using webapi.filmes.tarde.Interfaces;
 using webapi.filmes.tarde.Repositories;
@@ -19,6 +20,7 @@ namespace webapi.filmes.tarde.Controllers
     /// Define o tipo de resposta da API como JSON
     /// </summary>
     [Produces("application/json")]
+    [Authorize]
     public class FilmeController : ControllerBase
     {
         /// <summary>

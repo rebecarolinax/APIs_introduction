@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using webapi.filmes.tarde.Domains;
 using webapi.filmes.tarde.Interfaces;
@@ -20,6 +21,7 @@ namespace webapi.filmes.tarde.Controllers
     /// Define o tipo de resposta da API como JSON
     /// </summary>
     [Produces("application/json")]
+    [Authorize]
     public class GeneroController : ControllerBase
     {
         /// <summary>
@@ -36,7 +38,9 @@ namespace webapi.filmes.tarde.Controllers
         /// Endpoint que acessa o método de listar os gêneros
         /// </summary>
         /// <returns>Lista de gêneros e um Status Code</returns>
+        /// 
         [HttpGet]
+        [Authorize]//precisa estar logado para acessar a rota
         [Route("ListarTodos")]
         public IActionResult GetAll()
         {
